@@ -17,13 +17,13 @@ import javax.swing.JFrame;
 public class Sorting {
 
     /** Increment to sweep the sort. */
-    private static final int SORT_INCREMENT = 10000;
+    private static final int SORT_INCREMENT = 1000;
 
     /** Total number of values to try. */
     private static final int TOTAL_SORT_VALUES = 100;
 
     /** Total data size. */
-    private static final int TOTAL_INTEGER_VALUES = 1000000;
+    private static final int TOTAL_INTEGER_VALUES = 100000;
 
     /**
      * Bubble sort.
@@ -33,7 +33,16 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] bubbleSort(final int[] array) {
-        return null;
+        for (int i = 0; i < array.length - 1; i++) {
+            for (int j = 1; j < array.length - i; j++) {
+                if (array[j - 1] > array[j]) {
+                    int temp = array[j - 1];
+                    array[j] = array[j - 1];
+                    array[j - 1] = temp;
+                }
+            }
+        }
+        return array;
     }
 
     /**
@@ -44,7 +53,18 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] selectionSort(final int[] array) {
-        return null;
+        for (int i = 0; i < array.length - 1; i++) {
+            int index = i;
+            for (int j = i + 1; j < array.length; j++) {
+                if (array[j] < array[index]) {
+                    index = j;
+                }
+            }
+            int smallerNumber = array[index];
+            array[index] = array[i];
+            array[i] = smallerNumber;
+        }
+        return array;
     }
 
     /**
@@ -55,7 +75,43 @@ public class Sorting {
      */
     @SuppressWarnings("unused")
     private static int[] mergeSort(final int[] array) {
-        return null;
+        return mergeSort(array, 0, array.length);
+    }
+
+    /**
+     * mergesort.
+     * @param array the array
+     * @param lo the lower
+     * @param hi the higher
+     * @return sorted.
+     */
+    private static int[] mergeSort(final int[] array, final int lo, final int hi) {
+        if (lo >= hi) {
+            return array;
+        }
+        if (array.length == 1) {
+            return array;
+        }
+        if (array.length == 2) {
+            if (array[0] > array[1]) {
+                int temp = array[1];
+                array[1] = array[0];
+                array[0] = temp;
+            }
+            return array;
+        }
+        int mid = (lo + hi) / 2;
+        int[] arrayfirst = new int[mid + 1];
+        for (int i = 0; i < arrayfirst.length; i++) {
+            arrayfirst[i] = array[i];
+        }
+        arrayfirst = mergeSort(arrayfirst, 0, arrayfirst.length);
+        int[] arraysecond = new int[array.length - mid - 1];
+        for (int i = 0; i < arraysecond.length; i++) {
+            arraysecond[i] = array[mid + 1 + i];
+        }
+        arraysecond = mergeSort(arraysecond, 0, arraysecond.length);
+        return merge(arrayfirst, arraysecond);
     }
 
     /**
